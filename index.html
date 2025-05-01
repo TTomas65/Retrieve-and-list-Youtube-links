@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Videó Gyűjtő</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>YouTube Videó Gyűjtő</h1>
+            <p>Gyűjtsd ki a videók címeit és linkjeit egy YouTube csatorna videó oldaláról</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="youtube-url">YouTube videólista URL:</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="youtube-url" placeholder="Pl.: https://www.youtube.com/@ataisz_titkai/videos">
+                        <button id="extract-btn" type="button">
+                            <i class="fas fa-search"></i> Kinyerés
+                        </button>
+                    </div>
+                </div>
+                <div class="example">
+                    <p>Példa: <span class="example-url">https://www.youtube.com/@ataisz_titkai/videos</span></p>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">
+                    <h2>Eredmény</h2>
+                    <button id="copy-btn" type="button">
+                        <i class="fas fa-copy"></i> Másolás
+                    </button>
+                </div>
+                <textarea id="result" readonly placeholder="Itt jelennek meg a videók címei és linkjei..."></textarea>
+                <div id="status" class="status"></div>
+            </div>
+            
+            <div class="guide-section" id="guide-section">
+                <h2>Részletes útmutató a konzol használatához</h2>
+                <p class="guide-intro">Ha az automatikus kinyerés nem működik, kövesd az alábbi lépéseket:</p>
+                
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <h3>1. Nyisd meg a YouTube videólista oldalt</h3>
+                        <p>Nyisd meg a YouTube csatorna videók oldalát (pl. <a href="https://www.youtube.com/@ataisz_titkai/videos" target="_blank">https://www.youtube.com/@ataisz_titkai/videos</a>)</p>
+                        <div class="guide-image">
+                            <img src="https://i.imgur.com/JKtJjBx.png" alt="YouTube videólista oldal">
+                        </div>
+                    </div>
+                    
+                    <div class="guide-step">
+                        <h3>2. Nyisd meg a fejlesztői eszközöket</h3>
+                        <p>Windows/Linux: Nyomd meg az <kbd>F12</kbd> billentyűt VAGY jobb klikk az oldalon és válaszd a "Vizsgálat" opciót</p>
+                        <p>Mac: Nyomd meg a <kbd>Command</kbd>+<kbd>Option</kbd>+<kbd>I</kbd> billentyűkombinációt</p>
+                        <div class="guide-image">
+                            <img src="https://i.imgur.com/8gqMj1Z.png" alt="Fejlesztői eszközök megnyitása">
+                        </div>
+                    </div>
+                    
+                    <div class="guide-step">
+                        <h3>3. Válaszd a "Console" fület</h3>
+                        <p>A fejlesztői eszközök tetején vagy alján keresd a "Console" vagy "Konzol" fület</p>
+                        <div class="guide-image">
+                            <img src="https://i.imgur.com/vxAFvdj.png" alt="Console fül kiválasztása">
+                        </div>
+                    </div>
+                    
+                    <div class="guide-step">
+                        <h3>4. Másold be és futtasd a kódot</h3>
+                        <p>Másold ki az alábbi kódot:</p>
+                        <div class="code-block">
+                            <pre><code>let videoData = '';
+const videos = document.querySelectorAll('ytd-grid-video-renderer, ytd-rich-item-renderer, ytd-video-renderer');
+videos.forEach(video => {
+    const titleElement = video.querySelector('#video-title, #title-wrapper');
+    const linkElement = video.querySelector('a#thumbnail, a#video-title-link');
+    
+    if (titleElement && linkElement) {
+        const title = titleElement.textContent.trim();
+        const link = 'https://www.youtube.com' + linkElement.getAttribute('href').split('&')[0];
+        videoData += title + '\n' + link + '\n\n';
+    }
+});
+console.log(videoData);</code></pre>
+                            <button class="copy-code-btn" onclick="copyCodeToClipboard(this)">
+                                <i class="fas fa-copy"></i> Másolás
+                            </button>
+                        </div>
+                        <p>Illeszd be a konzolba (<kbd>Ctrl</kbd>+<kbd>V</kbd> vagy <kbd>Command</kbd>+<kbd>V</kbd>)</p>
+                        <p>Nyomd meg az <kbd>Enter</kbd> billentyűt a kód futtatásához</p>
+                        <div class="guide-image">
+                            <img src="https://i.imgur.com/YQjfmLB.png" alt="Kód beillesztése a konzolba">
+                        </div>
+                    </div>
+                    
+                    <div class="guide-step">
+                        <h3>5. Másold ki az eredményt</h3>
+                        <p>Az eredmény a konzolban fog megjelenni</p>
+                        <p>Kattints jobb gombbal az eredményre és válaszd a "Copy string contents" vagy "Szöveg másolása" opciót</p>
+                        <div class="guide-image">
+                            <img src="https://i.imgur.com/ztdVvA1.png" alt="Eredmény másolása">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 YouTube Videó Gyűjtő | Készítette: Cascade AI</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function copyCodeToClipboard(button) {
+            const codeBlock = button.previousElementSibling;
+            const codeText = codeBlock.textContent;
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = codeText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // Változtasd meg a gomb szövegét rövid időre
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Másolva!';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
