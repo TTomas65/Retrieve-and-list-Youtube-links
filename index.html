@@ -8,66 +8,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div class="language-selector">
+        <button id="lang-toggle" class="lang-btn">
+            <span id="current-lang">EN</span>
+            <i class="fas fa-globe"></i>
+        </button>
+        <div id="lang-dropdown" class="lang-dropdown">
+            <a href="#" data-lang="en" class="active">English</a>
+            <a href="#" data-lang="hu">Magyar</a>
+        </div>
+    </div>
     <div class="container">
         <header>
-            <h1>Youtube linkek lekérése és listázása</h1>
-            <p>Gyűjtsd ki a videók címeit és linkjeit egy YouTube csatorna videó oldaláról</p>
+            <h1 data-lang-key="title">Youtube linkek lekérése és listázása</h1>
+            <p data-lang-key="subtitle">Gyűjtsd ki a videók címeit és linkjeit egy YouTube csatorna videó oldaláról</p>
         </header>
 
         <main>
             <div class="input-section">
                 <div class="input-group">
-                    <label for="youtube-url">YouTube videólista URL:</label>
+                    <label for="youtube-url" data-lang-key="url-label">YouTube videólista URL:</label>
                     <div class="input-wrapper">
                         <input type="text" id="youtube-url" placeholder="Pl.: https://www.youtube.com/@tvggraphics2423/videos">
                         <button id="extract-btn" type="button">
-                            <i class="fas fa-search"></i> Kinyerés
+                            <i class="fas fa-search"></i> <span data-lang-key="extract-btn">Kinyerés</span>
                         </button>
                     </div>
                 </div>
                 <div class="example">
-                    <p>Példa: <span class="example-url">https://www.youtube.com/@tvggraphics2423/videos</span></p>
+                    <p><span data-lang-key="example">Példa</span>: <span class="example-url">https://www.youtube.com/@tvggraphics2423/videos</span></p>
                 </div>
             </div>
 
             <div class="output-section">
                 <div class="output-header">
-                    <h2>Eredmény</h2>
+                    <h2 data-lang-key="result">Eredmény</h2>
                     <button id="copy-btn" type="button">
-                        <i class="fas fa-copy"></i> Másolás
+                        <i class="fas fa-copy"></i> <span data-lang-key="copy-btn">Másolás</span>
                     </button>
                 </div>
-                <textarea id="result" readonly placeholder="Itt jelennek meg a videók címei és linkjei..."></textarea>
+                <textarea id="result" readonly data-lang-key="result-placeholder" placeholder="Itt jelennek meg a videók címei és linkjei..."></textarea>
                 <div id="status" class="status"></div>
             </div>
             
             <div class="guide-section" id="guide-section">
-                <h2>Részletes útmutató a konzol használatához</h2>
-                <p class="guide-intro">Ha az automatikus kinyerés nem működik, kövesd az alábbi lépéseket:</p>
+                <h2 data-lang-key="guide-title">Részletes útmutató a konzol használatához</h2>
+                <p class="guide-intro" data-lang-key="guide-intro">Ha az automatikus kinyerés nem működik, kövesd az alábbi lépéseket:</p>
                 
                 <div class="guide-steps">
                     <div class="guide-step">
-                        <h3>1. Nyisd meg a YouTube videólista oldalt</h3>
-                        <p>Nyisd meg a YouTube csatorna videók oldalát (pl. <a href="https://www.youtube.com/@tvggraphics2423/videos" target="_blank">https://www.youtube.com/@tvggraphics2423/videos</a>)</p>
+                        <h3 data-lang-key="step1-title">1. Nyisd meg a YouTube videólista oldalt</h3>
+                        <p data-lang-key="step1-desc">Nyisd meg a YouTube csatorna videók oldalát (pl. <a href="https://www.youtube.com/@tvggraphics2423/videos" target="_blank">https://www.youtube.com/@tvggraphics2423/videos</a>)</p>
 
                     </div>
                     
                     <div class="guide-step">
-                        <h3>2. Nyisd meg a fejlesztői eszközöket</h3>
-                        <p>Windows/Linux: Nyomd meg az <kbd>F12</kbd> billentyűt VAGY jobb klikk az oldalon és válaszd a "Vizsgálat" opciót</p>
-                        <p>Mac: Nyomd meg a <kbd>Command</kbd>+<kbd>Option</kbd>+<kbd>I</kbd> billentyűkombinációt</p>
+                        <h3 data-lang-key="step2-title">2. Nyisd meg a fejlesztői eszközöket</h3>
+                        <p data-lang-key="step2-desc1">Windows/Linux: Nyomd meg az <kbd>F12</kbd> billentyűt VAGY jobb klikk az oldalon és válaszd a "Vizsgálat" opciót</p>
+                        <p data-lang-key="step2-desc2">Mac: Nyomd meg a <kbd>Command</kbd>+<kbd>Option</kbd>+<kbd>I</kbd> billentyűkombinációt</p>
 
                     </div>
                     
                     <div class="guide-step">
-                        <h3>3. Válaszd a "Console" fület</h3>
-                        <p>A fejlesztői eszközök tetején vagy alján keresd a "Console" vagy "Konzol" fület</p>
+                        <h3 data-lang-key="step3-title">3. Válaszd a "Console" fület</h3>
+                        <p data-lang-key="step3-desc">A fejlesztői eszközök tetején vagy alján keresd a "Console" vagy "Konzol" fület</p>
 
                     </div>
                     
                     <div class="guide-step">
-                        <h3>4. Másold be és futtasd a kódot</h3>
-                        <p>Másold ki az alábbi kódot:</p>
+                        <h3 data-lang-key="step4-title">4. Másold be és futtasd a kódot</h3>
+                        <p data-lang-key="step4-desc">Másold ki az alábbi kódot:</p>
                         <div class="code-block">
                             <pre><code>let videoData = '';
 const videos = document.querySelectorAll('ytd-grid-video-renderer, ytd-rich-item-renderer, ytd-video-renderer');
@@ -83,18 +93,18 @@ videos.forEach(video => {
 });
 console.log(videoData);</code></pre>
                             <button class="copy-code-btn" onclick="copyCodeToClipboard(this)">
-                                <i class="fas fa-copy"></i> Másolás
+                                <i class="fas fa-copy"></i> <span data-lang-key="copy-code-btn">Másolás</span>
                             </button>
                         </div>
-                        <p>Illeszd be a konzolba (<kbd>Ctrl</kbd>+<kbd>V</kbd> vagy <kbd>Command</kbd>+<kbd>V</kbd>)</p>
-                        <p>Nyomd meg az <kbd>Enter</kbd> billentyűt a kód futtatásához</p>
+                        <p data-lang-key="step4-desc2">Illeszd be a konzolba (<kbd>Ctrl</kbd>+<kbd>V</kbd> vagy <kbd>Command</kbd>+<kbd>V</kbd>)</p>
+                        <p data-lang-key="step4-desc3">Nyomd meg az <kbd>Enter</kbd> billentyűt a kód futtatásához</p>
 
                     </div>
                     
                     <div class="guide-step">
-                        <h3>5. Másold ki az eredményt</h3>
-                        <p>Az eredmény a konzolban fog megjelenni</p>
-                        <p>Kattints jobb gombbal az eredményre és válaszd a "Copy string contents" vagy "Szöveg másolása" opciót</p>
+                        <h3 data-lang-key="step5-title">5. Másold ki az eredményt</h3>
+                        <p data-lang-key="step5-desc1">Az eredmény a konzolban fog megjelenni</p>
+                        <p data-lang-key="step5-desc2">Kattints jobb gombbal az eredményre és válaszd a "Copy string contents" vagy "Szöveg másolása" opciót</p>
 
                     </div>
                 </div>
@@ -102,7 +112,7 @@ console.log(videoData);</code></pre>
         </main>
 
         <footer>
-            <p>© 2025 Youtube linkek lekérése és listázása | GitHub: <a href="https://github.com/TTomas65/Retrieve-and-list-Youtube-links" target="_blank">https://github.com/TTomas65/Retrieve-and-list-Youtube-links</a></p>
+            <p>© 2025 <span data-lang-key="footer-title">Youtube linkek lekérése és listázása</span> | GitHub: <a href="https://github.com/TTomas65/Retrieve-and-list-Youtube-links" target="_blank">https://github.com/TTomas65/Retrieve-and-list-Youtube-links</a></p>
         </footer>
     </div>
 
@@ -121,7 +131,7 @@ console.log(videoData);</code></pre>
             
             // Változtasd meg a gomb szövegét rövid időre
             const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Másolva!';
+            button.innerHTML = '<i class="fas fa-check"></i> <span class="copied-text" data-lang-key="copied">Másolva!</span>';
             setTimeout(() => {
                 button.innerHTML = originalText;
             }, 2000);
