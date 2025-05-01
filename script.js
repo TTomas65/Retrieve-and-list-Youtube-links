@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultTextarea.value = `# RÉSZLETES ÚTMUTATÓ A YOUTUBE VIDEÓK KINYERÉSÉHEZ
 
 ## 1. LÉPÉS: NYISD MEG A YOUTUBE VIDEÓLISTA OLDALT
-- Nyisd meg a YouTube csatorna videók oldalát (pl. https://www.youtube.com/@ataisz_titkai/videos)
+- Nyisd meg a YouTube csatorna videók oldalát (pl. https://www.youtube.com/@tvggraphics2423/videos)
 - Győződj meg róla, hogy a videólista betöltődött (görgess lejjebb több videó betöltéséhez)
 
 ## 2. LÉPÉS: NYISD MEG A FEJLESZTŐI ESZKÖZÖKET

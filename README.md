@@ -13,7 +13,7 @@ Modern, sötét témájú webalkalmazás, amely YouTube csatornák videóinak c�
 ## Használat
 
 1. Nyisd meg az `index.html` fájlt egy böngészőben
-2. Illeszd be a YouTube csatorna videólistájának URL-jét (pl. `https://www.youtube.com/@ataisz_titkai/videos`)
+2. Illeszd be a YouTube csatorna videólistájának URL-jét (pl. `https://www.youtube.com/@tvggraphics2423/videos`)
 3. Kattints a "Kinyerés" gombra
 4. Az eredmény megjelenik a szövegmezőben, ahonnan könnyen másolható
 
