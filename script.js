@@ -46,47 +46,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         showStatus('Videók kinyerése folyamatban...', '');
-        resultTextarea.value = '';
+        resultTextarea.value = '1. Folyamat indítása...';
         
         try {
             // Use a CORS proxy to fetch the YouTube page
+            updateResult('2. CORS proxy kapcsolódás...');
             const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+            
+            updateResult('3. YouTube oldal lekérése...');
             const response = await fetch(proxyUrl);
             
             if (!response.ok) {
                 throw new Error('Hálózati hiba történt');
             }
             
+            updateResult('4. Válasz feldolgozása...');
             const data = await response.json();
             
             if (!data.contents) {
                 throw new Error('Nem sikerült betölteni az oldalt');
             }
             
+            updateResult('5. HTML tartalom elemzése...');
+            
             // Parse the HTML content
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(data.contents, 'text/html');
             
             // Extract video information
+            updateResult('6. Videó elemek keresése...');
             const videoElements = htmlDoc.querySelectorAll('ytd-grid-video-renderer, ytd-rich-item-renderer');
             
             if (videoElements.length === 0) {
                 // Try alternative selectors for newer YouTube layout
+                updateResult('   - Alternatív videó elemek keresése...');
                 const altVideoElements = htmlDoc.querySelectorAll('ytd-video-renderer, ytd-compact-video-renderer');
                 
                 if (altVideoElements.length === 0) {
                     throw new Error('Nem találhatók videók ezen az oldalon. Győződj meg róla, hogy helyes URL-t adtál meg.');
                 }
                 
+                updateResult(`7. ${altVideoElements.length} videó elem találva, feldolgozás...`);
                 processVideoElements(altVideoElements);
             } else {
+                updateResult(`7. ${videoElements.length} videó elem találva, feldolgozás...`);
                 processVideoElements(videoElements);
             }
             
         } catch (error) {
+            updateResult(`HIBA: ${error.message}`);
             showStatus(`Hiba: ${error.message}`, 'error');
             
             // Provide detailed alternative method when CORS proxy fails
+            updateResult('\nA közvetlen kinyerés nem sikerült. Kérlek kövesd a részletes útmutatót.');
             showStatus(`A közvetlen kinyerés nem sikerült. Kérlek kövesd a részletes útmutatót.`, 'error');
             suggestConsoleMethod();
         }
@@ -96,8 +108,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function processVideoElements(videoElements) {
         let result = '';
         let count = 0;
+        let processedCount = 0;
         
-        videoElements.forEach(video => {
+        videoElements.forEach((video, index) => {
+            if (index % 5 === 0 && index > 0) {
+                updateResult(`   - Feldolgozva ${index}/${videoElements.length} videó...`);
+            }
+            
             const titleElement = video.querySelector('#video-title, #title-wrapper');
             const linkElement = video.querySelector('a#thumbnail, a#video-title-link');
             
@@ -106,18 +123,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 let link = linkElement.getAttribute('href');
                 
                 // Clean up the link and ensure it's a full URL
-                if (link.startsWith('/watch')) {
+                if (link && link.startsWith('/watch')) {
                     link = 'https://www.youtube.com' + link.split('&')[0];
                     result += title + '\n' + link + '\n\n';
                     count++;
                 }
             }
+            processedCount++;
         });
         
+        updateResult(`8. Feldolgozás befejezve: ${processedCount}/${videoElements.length} videó feldolgozva.`);
+        
         if (count > 0) {
-            resultTextarea.value = result.trim();
+            updateResult(`9. Összesen ${count} videó cím és link kinyerve.`);
+            updateResult('\n' + result.trim());
             showStatus(`Sikeresen kinyerve ${count} videó!`, 'success');
         } else {
+            updateResult('9. Nem sikerült videókat kinyerni. Próbáld meg a konzol módszert.');
             showStatus('Nem sikerült videókat kinyerni. Próbáld meg a konzol módszert.', 'error');
             suggestConsoleMethod();
         }
@@ -195,5 +217,12 @@ console.log(videoData);
                 statusElement.className = 'status';
             }, 5000);
         }
+    }
+    
+    // Update result textarea with progress message
+    function updateResult(message) {
+        resultTextarea.value += '\n' + message;
+        // Scroll to bottom to show latest message
+        resultTextarea.scrollTop = resultTextarea.scrollHeight;
     }
 });
